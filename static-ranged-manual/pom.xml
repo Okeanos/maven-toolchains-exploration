@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>maven-toolchains-exploration</artifactId>
+		<groupId>com.nikolasgrottendieck</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>static-ranged-manual</artifactId>
+	<description>This module exists because `static-range-calculated` does not appear to work as expected. For some reason the interplay between the `build-helper-maven-plugin` and the `toolchain` configuration for the `toolchain`-goal of `maven-toolchains-plugin` do not work as expected (see `dynamic-ranged`)</description>
+
+	<properties>
+		<java.version>21</java.version>
+		<java-max.version>22</java-max.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+	</properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<toolchains>
+						<jdk>
+							<!--
+								Version Range Specification:
+								https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+							-->
+							<version>[${java.version},${java-max.version})</version>
+						</jdk>
+					</toolchains>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

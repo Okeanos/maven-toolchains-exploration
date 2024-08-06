@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.nikolasgrottendieck</groupId>
+	<artifactId>maven-toolchains-exploration</artifactId>
+	<name>${project.artifactId}</name>
+	<version>0.0.1-SNAPSHOT</version>
+	<description>An exploration of Maven Toolchains</description>
+	<url>https://github.com/Okeanos/maven-toolchains-exploration</url>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>MIT</name>
+			<url>https://github.com/Okeanos/maven-toolchains-exploration/blob/main/LICENSE</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:https://github.com/Okeanos/maven-toolchains-exploration</connection>
+		<developerConnection>scm:git:https://github.com/Okeanos/maven-toolchains-exploration</developerConnection>
+		<url>https://github.com/Okeanos/maven-toolchains-exploration</url>
+		<tag>HEAD</tag>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Okeanos Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/Okeanos/maven-toolchains-exploration</url>
+		</repository>
+	</distributionManagement>
+
+	<modules>
+		<module>dynamic-major-only</module>
+		<module>dynamic-ranged</module>
+		<module>static-major-only</module>
+		<module>static-ranged-calculated</module>
+		<module>static-ranged-manual</module>
+	</modules>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
+		<maven.compiler.encoding>${project.build.sourceEncoding}</maven.compiler.encoding>
+
+		<build-helper-maven-plugin.version>3.6.0</build-helper-maven-plugin.version>
+		<echo-maven-plugin.version>2.1.0</echo-maven-plugin.version>
+		<maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+		<maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>${maven-compiler-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>${maven-toolchains-plugin.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>${build-helper-maven-plugin.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>maven-toolchains-exploration</artifactId>
+		<groupId>com.nikolasgrottendieck</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>static-ranged-calculated</artifactId>
+
+	<properties>
+		<java.version>21</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+	</properties>
+
+	<build>
+		<plugins>
+			<!--
+				Plugin declaration order is the deciding factor when the same phase is targeted
+				builder-helper-maven-plugin has to execute before maven-toolchains-plugin or else
+				the expected property will not be available because the selected goals run in the
+				same phase by default (`validate`).
+				See:
+				- https://maven.apache.org/ref/3.9.8/maven-core/lifecycles.html
+				- https://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html
+				- https://maven.apache.org/plugins/maven-toolchains-plugin/select-jdk-toolchain-mojo.html
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+						<configuration>
+							<versionString>${java.version}</versionString>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.ekryd.echo-maven-plugin</groupId>
+				<artifactId>echo-maven-plugin</artifactId>
+				<version>${echo-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<message>Version properties:${line.separator}java.version: '${java.version}'${line.separator}parsedVersion.nextMajorVersion: '${parsedVersion.nextMajorVersion}'</message>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<toolchains>
+						<jdk>
+							<!--
+								Version Range Specification:
+								https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+							-->
+							<version>[${java.version},${parsedVersion.nextMajorVersion})</version>
+						</jdk>
+					</toolchains>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

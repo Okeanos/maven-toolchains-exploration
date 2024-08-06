@@ -1,0 +1,45 @@
+# See https://help.github.com/en/actions/automating-your-workflow-with-github-actions
+# See https://github.com/actions/setup-java
+name: Toolchain Self-Managed
+
+# yamllint disable-line rule:truthy
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version-file: '.java-version'
+      - name: Cache maven artifacts
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Configure Maven
+        run: cp -f .mvn/maven_ci.config .mvn/maven.config
+      - name: Inspect Toolchain
+        run: |
+          mvn --version
+          mvn toolchains:display-discovered-jdk-toolchains
+          cat ~/.m2/toolchains.xml
+      - name: Build with Maven
+        run: |
+          mvn verify
+        continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317
