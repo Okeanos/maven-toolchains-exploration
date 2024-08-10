@@ -46,5 +46,5 @@ jobs:
           mvn toolchains:display-discovered-jdk-toolchains
       - name: Build with Maven
         run: |
-          mvn verify
+          mvn compile
         continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317

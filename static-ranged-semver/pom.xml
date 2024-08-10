@@ -11,8 +11,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>static-ranged-manual</artifactId>
-	<description>This module exists because `static-range-calculated` does not appear to work as expected. For some reason the interplay between the `build-helper-maven-plugin` and the `toolchain` configuration for the `toolchain`-goal of `maven-toolchains-plugin` do not work as expected (see `dynamic-ranged`)</description>
+	<artifactId>static-ranged-semver</artifactId>
 
 	<properties>
 		<java.version>21</java.version>
@@ -22,11 +21,26 @@
 			Version Range Specification:
 			https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
 		-->
-		<toolchains.jdk.java.version>[${java.version},${java-max.version})</toolchains.jdk.java.version>
+		<toolchains.jdk.version>[${java.version}.0.0,${java-max.version}.0.0)</toolchains.jdk.version>
 	</properties>
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.github.ekryd.echo-maven-plugin</groupId>
+				<artifactId>echo-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<message>Version properties:${line.separator}java.version: '${java.version}'${line.separator}java-max.version: '${java-max.version}'${line.separator}toolchains.jdk.version: '${toolchains.jdk.version}'</message>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
@@ -44,7 +58,7 @@
 				<configuration>
 					<toolchains>
 						<jdk>
-							<version>${toolchains.jdk.java.version}</version>
+							<version>${toolchains.jdk.version}</version>
 						</jdk>
 					</toolchains>
 				</configuration>

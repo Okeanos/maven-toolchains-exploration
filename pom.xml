@@ -42,6 +42,7 @@
 		<module>static-major-only</module>
 		<module>static-ranged-calculated</module>
 		<module>static-ranged-manual</module>
+		<module>static-ranged-semver</module>
 	</modules>
 
 	<properties>
@@ -58,6 +59,11 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>com.github.ekryd.echo-maven-plugin</groupId>
+					<artifactId>echo-maven-plugin</artifactId>
+					<version>${echo-maven-plugin.version}</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>

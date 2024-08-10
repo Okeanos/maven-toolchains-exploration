@@ -16,6 +16,11 @@
 	<properties>
 		<java.version>21</java.version>
 		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<!--
+			Version Range Specification:
+			https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+		-->
+		<toolchains.jdk.version>[${java.version},${parsedVersion.nextMajorVersion})</toolchains.jdk.version>
 	</properties>
 
 	<build>
@@ -47,7 +52,6 @@
 			<plugin>
 				<groupId>com.github.ekryd.echo-maven-plugin</groupId>
 				<artifactId>echo-maven-plugin</artifactId>
-				<version>${echo-maven-plugin.version}</version>
 				<executions>
 					<execution>
 						<goals>
@@ -55,7 +59,7 @@
 						</goals>
 						<phase>validate</phase>
 						<configuration>
-							<message>Version properties:${line.separator}java.version: '${java.version}'${line.separator}parsedVersion.nextMajorVersion: '${parsedVersion.nextMajorVersion}'</message>
+							<message>Version properties:${line.separator}java.version: '${java.version}'${line.separator}parsedVersion.nextMajorVersion: '${parsedVersion.nextMajorVersion}'${line.separator}toolchains.jdk.version: '${toolchains.jdk.version}'</message>
 						</configuration>
 					</execution>
 				</executions>
@@ -70,14 +74,14 @@
 						</goals>
 					</execution>
 				</executions>
+				<!--
+					Sadly, this cannot be configured via a property because it is not exposed as such and has to
+					be explicitly configured. See `dynamic-*` modules for expected alternatives.
+				-->
 				<configuration>
 					<toolchains>
 						<jdk>
-							<!--
-								Version Range Specification:
-								https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
-							-->
-							<version>[${java.version},${parsedVersion.nextMajorVersion})</version>
+							<version>${toolchains.jdk.version}</version>
 						</jdk>
 					</toolchains>
 				</configuration>
