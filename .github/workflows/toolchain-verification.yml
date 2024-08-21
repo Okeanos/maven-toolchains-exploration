@@ -42,7 +42,7 @@ jobs:
       - name: Configure Maven
         run: cp -f .mvn/maven_ci.config .mvn/maven.config
       - name: Inspect Toolchain
-        run:
+        run: |
           mvn --version
           mvn toolchains:display-discovered-jdk-toolchains
           stat ~/.m2/toolchains.xml
