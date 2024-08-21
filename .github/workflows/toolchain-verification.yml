@@ -43,6 +43,7 @@ jobs:
         run: cp -f .mvn/maven_ci.config .mvn/maven.config
       - name: Inspect Toolchain
         run: |
+          set +e # don't want to fail because of the `stat` call at the end
           mvn --version
           mvn toolchains:display-discovered-jdk-toolchains
           stat ~/.m2/toolchains.xml
