@@ -109,7 +109,7 @@ the purpose of the whole thing, i.e. being able to say "Java 21 works" because `
 still a release of Java 21.
 
 Following that discovery I built a number of different possible solutions to this problem by using version ranges
-instead. 
+instead.
 
 All in all there are questions the current documentation doesn't appear to answer:
 
