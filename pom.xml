@@ -43,6 +43,7 @@
 		<module>static-ranged-calculated</module>
 		<module>static-ranged-manual</module>
 		<module>static-ranged-semver</module>
+		<module>error-prone-integration</module>
 	</modules>
 
 	<properties>

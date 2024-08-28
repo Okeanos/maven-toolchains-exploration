@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>maven-toolchains-exploration</artifactId>
+		<groupId>com.nikolasgrottendieck</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>error-prone-integration</artifactId>
+
+	<properties>
+		<java.version>21</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<!--
+			Version Range Specification:
+			https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+		-->
+		<toolchain.jdk.version>[${java.version},${parsedVersion.nextMajorVersion})</toolchain.jdk.version>
+
+		<error-prone.version>2.30.0</error-prone.version>
+		<findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
+		<nullaway.version>0.11.2</nullaway.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<!--
+				Plugin declaration order is the deciding factor when the same phase is targeted
+				builder-helper-maven-plugin has to execute before maven-toolchains-plugin or else
+				the expected property will not be available because the selected goals run in the
+				same phase by default (`validate`).
+				See:
+				- https://maven.apache.org/ref/3.9.8/maven-core/lifecycles.html
+				- https://www.mojohaus.org/build-helper-maven-plugin/parse-version-mojo.html
+				- https://maven.apache.org/plugins/maven-toolchains-plugin/select-jdk-toolchain-mojo.html
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+						<configuration>
+							<versionString>${java.version}</versionString>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.ekryd.echo-maven-plugin</groupId>
+				<artifactId>echo-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>echo</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<message>Version properties:${line.separator}java.version:
+								'${java.version}'${line.separator}parsedVersion.nextMajorVersion:
+								'${parsedVersion.nextMajorVersion}'${line.separator}toolchain.jdk.version:
+								'${toolchain.jdk.version}'
+							</message>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>select-jdk-toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<compilerArgs>
+						<!--
+							Treat all warnings as errors as proposed in https://github.com/google/error-prone/issues/424
+						-->
+						<arg>-Werror</arg>
+						<arg>-XDcompilePolicy=simple</arg>
+						<!--
+							For details about the standard bug patterns check:
+							- ErrorProne: https://errorprone.info/bugpatterns
+							- NullAway: https://github.com/uber/NullAway/wiki/Configuration
+							Syntax as described here: https://errorprone.info/docs/flags#maven
+						-->
+						<arg>
+							-Xplugin:ErrorProne -Xep:DeduplicateConstants -Xep:DepAnn -Xep:InsecureCryptoUsage -Xep:IterablePathParameter -Xep:LongLiteralLowerCaseSuffix -Xep:PackageLocation:ERROR -Xep:StaticQualifiedUsingExpression -Xep:SystemExitOutsideMain -Xep:AvoidObjectArrays -Xep:CatchingUnchecked -Xep:CheckedExceptionNotThrown -Xep:DifferentNameButSame -Xep:EqualsBrokenForNull -Xep:InitializeInline -Xep:InterfaceWithOnlyStatics -Xep:MissingDefault -Xep:PreferJavaTimeOverload -Xep:PreferredInterfaceType -Xep:RedundantThrows -Xep:StatementSwitchToExpressionSwitch -Xep:SystemOut -Xep:TimeUnitMismatch -Xep:UnnecessarilyFullyQualified -Xep:UnnecessarilyUsedValue -Xep:UnnecessarilyVisible -Xep:UnnecessaryAnonymousClass -Xep:UnnecessaryDefaultInEnumSwitch -Xep:UnnecessaryOptionalGet -Xep:UnusedException -Xep:Varifier -Xep:YodaCondition -Xep:FieldCanBeFinal:WARN -Xep:FieldCanBeLocal:WARN -Xep:FieldCanBeStatic:WARN -Xep:FieldMissingNullable:WARN -Xep:ParameterMissingNullable:WARN -Xep:PrivateConstructorForUtilityClass:WARN -Xep:RemoveUnusedImports:WARN -Xep:ReturnMissingNullable:WARN -Xep:ReturnsNullCollection:WARN -Xep:UseEnumSwitch:WARN -XepExcludedPaths:.*/src/test/.* -XepOpt:NullAway:AnnotatedPackages=com.nikolasgrottendieck -XepOpt:NullAway:ExcludedFieldAnnotations=org.springframework.beans.factory.annotation.Value
+						</arg>
+						<!--
+							Compiler options for Java >= 16 declared in a Maven Toolchains compatible fashion
+							See https://errorprone.info/docs/installation#maven
+						-->
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+						<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+						<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
+					</compilerArgs>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>com.google.code.findbugs</groupId>
+							<artifactId>jsr305</artifactId>
+							<version>${findbugs-jsr305.version}</version>
+						</path>
+						<path>
+							<groupId>com.google.errorprone</groupId>
+							<artifactId>error_prone_core</artifactId>
+							<version>${error-prone.version}</version>
+						</path>
+						<path>
+							<groupId>com.uber.nullaway</groupId>
+							<artifactId>nullaway</artifactId>
+							<version>${nullaway.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
