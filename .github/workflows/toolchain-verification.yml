@@ -160,39 +160,3 @@ jobs:
         run: |
           ./mvnw test
         continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317
-
-  error-prone-analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out Git repository
-        uses: actions/checkout@v4
-      - name: Set up JDK
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: |
-            17
-            21
-            22
-      - name: Cache maven artifacts
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.m2/repository
-            ~/.m2/wrapper
-          key: ${{ runner.os }}-maven-self-managed-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-      - name: Configure Maven
-        run: cp -f .mvn/maven_ci.config .mvn/maven.config
-      - name: Inspect Toolchain
-        run: |
-          ./mvnw --version
-          ./mvnw toolchains:display-discovered-jdk-toolchains
-          cat ~/.m2/toolchains.xml
-      - name: Build with Maven
-        run: |
-          mvn clean -X compile -pl error-prone-integration > maven.log
-          ./mvnw clean -X compile -pl error-prone-integration > wrapper.log
-          diff --suppress-common-lines maven.log wrapper.log
-        continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317
