@@ -9,7 +9,7 @@
 	editorconfig-checker = "3.0.3"
 	gitleaks = "8.18.4"
 	hadolint = "3.1.0"
-	java = "21.0.4+7.0.LTS"
+	java = "21"
 	markdownlint-cli2 = "0.13.0"
 	shellcheck = "0.10.0"
 	shfmt = "3.9.0"
