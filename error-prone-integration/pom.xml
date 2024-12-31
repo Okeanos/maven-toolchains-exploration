@@ -72,6 +72,10 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!--
+                Maven Toolchains has to be declared before the compiler plugin
+                or else the wrong JDK/JVM will be used for compilation.
+            -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-toolchains-plugin</artifactId>
