@@ -27,9 +27,9 @@
 
 	<build>
 		<!--
-                Maven Toolchains has to be declared before the compiler plugin
-                or else the wrong JDK/JVM will be used for compilation.
-            -->
+			Maven Toolchains has to be declared before the compiler plugin
+			or else the wrong JDK/JVM will be used for compilation.
+		-->
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
