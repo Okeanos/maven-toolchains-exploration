@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<artifactId>maven-toolchains-exploration</artifactId>
+		<groupId>com.nikolasgrottendieck</groupId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>dynamic-ranged-surefire-forks</artifactId>
+
+	<properties>
+		<java.version>21</java.version>
+		<maven.compiler.release>${java.version}</maven.compiler.release>
+		<!--
+			Version Range Specification:
+			https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+		-->
+		<toolchain.jdk.version>[${java.version},)</toolchain.jdk.version>
+	</properties>
+
+	<build>
+		<plugins>
+			<!--
+				Maven Toolchains has to be declared before the compiler plugin
+				or else the wrong JDK/JVM will be used for compilation.
+			-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-toolchains-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>select-jdk-toolchain</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<!--
+						Without fork=true the build fails on macOS with the Maven Wrapper.
+						For some reason (according to minimal tests) not setting fork=true still works on Linux.
+						Probably related to modifying existing/running processes with e.g. Error-Prone.
+					-->
+					<fork>true</fork>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<forkCount>1</forkCount>
+					<reuseForks>false</reuseForks>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

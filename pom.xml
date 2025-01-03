@@ -39,6 +39,7 @@
 	<modules>
 		<module>dynamic-major-only</module>
 		<module>dynamic-ranged</module>
+		<module>dynamic-ranged-surefire-forks</module>
 		<module>static-major-only</module>
 		<module>static-ranged-calculated</module>
 		<module>static-ranged-manual</module>
