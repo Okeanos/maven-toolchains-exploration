@@ -14,9 +14,9 @@
 	<artifactId>java-6-detection-ifsame</artifactId>
 
 	<properties>
-		<java.version>1.6</java.version>
-		<maven.compiler.source>${java.version}</maven.compiler.source>
-		<maven.compiler.target>${java.version}</maven.compiler.target>
+		<java.version>6</java.version>
+		<maven.compiler.source>1.${java.version}</maven.compiler.source>
+		<maven.compiler.target>1.${java.version}</maven.compiler.target>
 		<!--
 			Version Range Specification:
 			https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
