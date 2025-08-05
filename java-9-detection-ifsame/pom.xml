@@ -11,7 +11,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>java-9-detection</artifactId>
+	<artifactId>java-9-detection-ifsame</artifactId>
 
 	<properties>
 		<java.version>1.9</java.version>

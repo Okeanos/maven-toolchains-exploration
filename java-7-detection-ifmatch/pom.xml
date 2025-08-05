@@ -11,7 +11,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<artifactId>java-7-detection</artifactId>
+	<artifactId>java-7-detection-ifmatch</artifactId>
 
 	<properties>
 		<java.version>1.7</java.version>
