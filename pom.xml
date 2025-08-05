@@ -45,6 +45,14 @@
 		<module>static-ranged-manual</module>
 		<module>static-ranged-semver</module>
 		<module>error-prone-integration</module>
+		<module>java-6-detection-ifmatch</module>
+		<module>java-6-detection-ifsame</module>
+		<module>java-7-detection-ifmatch</module>
+		<module>java-7-detection-ifsame</module>
+		<module>java-8-detection-ifmatch</module>
+		<module>java-8-detection-ifsame</module>
+		<module>java-9-detection-ifmatch</module>
+		<module>java-9-detection-ifsame</module>
 	</modules>
 
 	<properties>
