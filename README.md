@@ -119,4 +119,31 @@ All in all there are questions the current documentation doesn't appear to answe
 - can I still use "just 21" with auto-discovered toolchains?
 - ...
 
+The best solution I could come up with is:
+
+### Version Range using `org.codehaus.mojo:build-helper-maven-plugin`
+
+Check the `dynamic-ranged` module for a complete example.
+
+```xml
+<properties>
+  <java.version>21</java.version>
+  <maven.compiler.release>${java.version}</maven.compiler.release>
+  <!--
+    Version Range Specification:
+    https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+  -->
+  <toolchain.jdk.version>[${java.version},${parsedVersion.nextMajorVersion})</toolchain.jdk.version>
+</properties>
+```
+
+You can skip the Maven plugin and manually handle both min and max version if you want to.
+
+If you want to use the "old" syntax with pre-defined toolchains instead of the auto-discovery then you check the
+`static-ranged-*` modules for examples-
+
+---
+
 Have a look at the modules and the Workflows in this repository to see the results.
+
+The Java 6 to 9 modules are additional behavior and detection tests.
