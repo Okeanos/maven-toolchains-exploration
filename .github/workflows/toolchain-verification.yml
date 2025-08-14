@@ -56,6 +56,7 @@ jobs:
         run: |
           ./mvnw --version
           ./mvnw toolchains:display-discovered-jdk-toolchains
+          update-alternatives --list java
           stat ~/.m2/toolchains.xml
         continue-on-error: true # the stat call will fail this step otherwise
       - name: Build with Maven
@@ -106,6 +107,7 @@ jobs:
         run: |
           ./mvnw --version
           ./mvnw toolchains:display-discovered-jdk-toolchains
+          update-alternatives --list java
           stat ~/.m2/toolchains.xml
         continue-on-error: true # the stat call will fail this step otherwise
       - name: Build with Maven
@@ -150,6 +152,7 @@ jobs:
         run: |
           ./mvnw --version
           ./mvnw toolchains:display-discovered-jdk-toolchains
+          update-alternatives --list java
           cat ~/.m2/toolchains.xml
       - name: Build with Maven
         run: |
@@ -193,6 +196,7 @@ jobs:
         run: |
           ./mvnw --version
           ./mvnw toolchains:display-discovered-jdk-toolchains
+          update-alternatives --list java
           cat ~/.m2/toolchains.xml
       - name: Build with Maven
         run: |
