@@ -54,13 +54,13 @@ jobs:
         run: cp -f .mvn/maven_ci.config .mvn/maven.config
       - name: Inspect Toolchain
         run: |
-          mvn --version
-          mvn toolchains:display-discovered-jdk-toolchains
+          ./mvnw --version
+          ./mvnw toolchains:display-discovered-jdk-toolchains
           stat ~/.m2/toolchains.xml
         continue-on-error: true # the stat call will fail this step otherwise
       - name: Build with Maven
         run: |
-          mvn test
+          ./mvnw test
         continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317
 
   auto-generated-wrapper:
@@ -148,12 +148,12 @@ jobs:
         run: cp -f .mvn/maven_ci.config .mvn/maven.config
       - name: Inspect Toolchain
         run: |
-          mvn --version
-          mvn toolchains:display-discovered-jdk-toolchains
+          ./mvnw --version
+          ./mvnw toolchains:display-discovered-jdk-toolchains
           cat ~/.m2/toolchains.xml
       - name: Build with Maven
         run: |
-          mvn test
+          ./mvnw test
         continue-on-error: true # make caching work https://github.com/actions/cache/issues/1317
 
   self-managed-wrapper:
