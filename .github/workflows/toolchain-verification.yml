@@ -12,7 +12,54 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
+  toolcache-inspection:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'macos-latest', 'ubuntu-latest', 'windows-latest' ]
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - name: Set up older JDK versions
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: 'zulu'
+          java-version: |
+            8
+            9
+      - name: Set up JDK
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
+        with:
+          distribution: 'temurin'
+          java-version: |
+            17
+            21
+            22
+      - name: Cache maven artifacts
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: |
+            ~/.m2/repository
+            ~/.m2/wrapper
+          key: ${{ runner.os }}-maven-auto-generated-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: "Check update-alternatives on Linux"
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: update-alternatives --list java
+      - name: "Check actions/setup-java Toolchain"
+        run: cat ~/.m2/toolchains.xml
+      - name: Inspect Toolchain
+        run: |
+          ./mvnw --version
+          ./mvnw toolchains:display-discovered-jdk-toolchains
+
   auto-generated:
     runs-on: ubuntu-latest
     steps:
