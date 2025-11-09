@@ -22,7 +22,7 @@
 		-->
 		<toolchain.jdk.version>[${java.version},${parsedVersion.nextMajorVersion})</toolchain.jdk.version>
 
-		<error-prone.version>2.43.0</error-prone.version>
+		<error-prone.version>2.44.0</error-prone.version>
 		<findbugs-jsr305.version>3.0.2</findbugs-jsr305.version>
 		<nullaway.version>0.12.12</nullaway.version>
 	</properties>
