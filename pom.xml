@@ -62,9 +62,9 @@
 
 		<build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
 		<echo-maven-plugin.version>2.1.0</echo-maven-plugin.version>
-		<junit-jupiter.version>6.0.2</junit-jupiter.version>
+		<junit-jupiter.version>6.0.3</junit-jupiter.version>
 		<maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-		<maven-surefire.version>3.5.4</maven-surefire.version>
+		<maven-surefire.version>3.5.5</maven-surefire.version>
 		<maven-toolchains-plugin.version>3.2.0</maven-toolchains-plugin.version>
 	</properties>
 
