@@ -2,10 +2,6 @@
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
 	"extends": [
 		// path as described in https://docs.renovatebot.com/config-presets/#preset-file-naming
-		// at this time the format is location>Owner/repo//filename.ext with // as repo-file separator
-		"github>Okeanos/renovate-config//default.json5",
-		// prevent issues with Renovate trying to lookup parents that do not exist remotely but are
-		// contained to the current repository
-		"workarounds:disableMavenParentRoot",
+		"github>Okeanos/renovate-config:default.json5",
 	],
 }
